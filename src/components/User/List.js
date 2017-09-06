@@ -22,7 +22,7 @@ class List extends Component {
 
             const imgClass = login == 0 ? 'gray' : 'lineimg';
 
-            leaveInfor = !leaveInfor ? false : (leaveInfor > 99 ? 99 : leaveInfor);
+            leaveInfor = !leaveInfor ? false : (leaveInfor > 99 ? '99+' : leaveInfor);
 
             const stateText = () => {
                 if (login == 1) {

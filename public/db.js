@@ -170,7 +170,7 @@ function sql() {
 
 module.exports = {insert, select, update, deleted, sql}
 
-// mysqlConnection(`truncate table ${sessionTable}`);
+mysqlConnection(`truncate table ${sessionTable}`);
 // mysqlConnection(`truncate table ${autologinTable}`);
-// mysqlConnection(`truncate table ${loginTable}`);
+mysqlConnection(`truncate table ${loginTable}`);
 // mysqlConnection(`truncate table ${userTable}`);

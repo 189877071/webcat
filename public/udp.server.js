@@ -13,7 +13,7 @@ const client = dgram.createSocket('udp4');
 exports.send = function (m, port, host) {
 
     return new Promise((reslove, reject) => {
-
+        
         const message = new Buffer((typeof m == 'object') ? JSON.stringify(m) : m);
 
         client.send(message, 0, message.length, Number(port), host, (err, bytes) => {
@@ -62,5 +62,6 @@ client.on('message', function (msg, rinfo) {
             userexit.selectSocketId(data).then(userexit.deleteSocketId).then(userexit.sendExit);
         }
     }
-    catch (e) { }
+    catch (e) { 
+    }
 });

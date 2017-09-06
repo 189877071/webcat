@@ -13,12 +13,10 @@
             color: #fff;
         }
         h1 {
-            height: 30px;
-            line-height: 30px;
             padding-left: 10px;
-            font-size: 14px;
+            height: 30px;
+            font: 14px/30px '';
             cursor: move;
-            // border-bottom: 1px solid #3d3d3d;
             font-weight: 500;
             i {
                 font-size: 14px;
@@ -62,14 +60,17 @@
             padding-right: 10px;
         }
         dt {
-            overflow: hidden;white-space: nowrap; text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap; 
+            text-overflow: ellipsis;
             height: 20px;
-            line-height: 20px;
-            font-size: 14px;
+            font: 14px/20px '';
             font-weight: bold;
         }
         dd {
-            overflow: hidden;white-space: nowrap; text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap; 
+            text-overflow: ellipsis;
             height: 20px;
             line-height: 20px;
         }
@@ -134,9 +135,8 @@
         .title {
             overflow: hidden;white-space: nowrap; text-overflow: ellipsis;
             height: 25px;
-            line-height: 25px;
+            font: 14px/25px '';
             padding-top: 5px;
-            font-size: 14px;
             color: #000;
             position: relative;
             span {
@@ -159,26 +159,23 @@
         .jianjie {
             color: #666;
             height: 20px;
-            line-height: 20px;
-            font-size: 12px;
+            font: 12px/20px '';
             overflow: hidden;
             white-space: nowrap; 
             text-overflow: ellipsis;
             position: relative;
 
             .leave-infor {
+                padding: 0 7px;
                 position: absolute;
                 right: 5px;
-                font-size: 12px;
-                width: 20px;
                 top: 0px;
-                height: 20px;
-                background: #f00;
+                background: #555;
                 color: #fff;
                 text-align: center;
-                line-height: 20px;
                 z-index: 2;
-                border-radius: 50%;
+                border-radius: 10px;
+                font: 12px/20px '';
             }
         }
     }
@@ -368,7 +365,6 @@
                 font-size: 20px;
             }
             .left a {
-                // padding: 0 5px;
                 background: #555;
                 margin-left: 0;
                 margin-right: 5px;
@@ -456,9 +452,9 @@
             cursor: pointer;
             width: 16px;
             height: 16px;
+            line-height: 14px;
             border-radius: 50%;
             text-align: center;
-            line-height: 14px;
             color: #fff;
             right: 6px;
             top: 6px;
@@ -467,8 +463,6 @@
                 font-size: 16px;
             }
             &:hover {
-                // background: #fff;
-                // color: #333;
                 box-shadow: 0 0 10px rgba(255,255,255,1);
                 color: #ccc;
             }
@@ -516,9 +510,8 @@
         }
 
         .jianjie {
-            font-size: 14px;
             height: 30px;
-            line-height: 30px;
+            font: 14px/30px '';
             overflow: hidden;white-space: nowrap; text-overflow: ellipsis;
         }
     }
@@ -591,11 +584,9 @@
             &:hover {
                 background: rgba(255,255,255,.3);
                 .close {
-                    // display: block;
                     opacity: 1;
                 }
                 .time {
-                    // display: none;
                     opacity: 0;
                 }
             }
@@ -645,9 +636,8 @@
         }
 
         .time {
-            font-size: 12px;
             height: 16px;
-            line-height: 16px;
+            font: 12px/16px '';
             color: #fff;
             position: absolute;
             top: 12px;
@@ -657,8 +647,7 @@
 
         .title-name {
             height: 20px;
-            line-height: 20px;
-            font-size: 14px;
+            font: 14px/20px '';
             width: 75px;
             overflow: hidden;
             white-space: nowrap; 
@@ -668,8 +657,7 @@
 
         .jianjie {
             height: 20px;
-            line-height: 20px;
-            font-size: 12px;
+            font: 12px/20px '';
             overflow: hidden;
             white-space: nowrap; 
             text-overflow: ellipsis;
@@ -692,8 +680,7 @@
         cursor: move;
         background: #fff;
         h1 {
-            line-height: 50px;
-            font-size: 16px;
+            font: 16px/50px '';
             color: #333;
             padding-left: 10px;
             span {
@@ -728,8 +715,6 @@
                 font-size: 16px;
             }
             &:hover {
-                // background: #555;
-                // color: #fff;
                 box-shadow: 0 0 10px rgba(0,0,0,.6);
                 color: #999;
             }
@@ -769,12 +754,10 @@
         height: 270px;
         padding-top: 50px;
         text-align: center;
-        // line-height: 240px;
         background: rgba(255,255,255,.8);
         p {
-            font-size: 20px;
             height: 30px;
-            line-height: 30px;
+            font: 20px/30px '';
             color: #333;
             span.f00 {
                 color: #f00;
@@ -845,9 +828,8 @@
     .camera-name {
         div {
             width: 320px;
-            line-height: 30px;
             height: 30px;
-            font-size: 16px;
+            font: 16px/30px '';
             text-align: center;
             color: #333;
         }
@@ -934,8 +916,7 @@
     .he-name {
         text-align: center;
         height: 40px;
-        line-height: 40px;
-        font-size: 16px;
+        font: 16px/40px '';
         color: #333;
         span {
             color: #f00;
@@ -976,8 +957,7 @@
         p {
             text-align: center;
             height: 40px;
-            line-height: 40px;
-            font-size: 16px;
+            font: 16px/40px '';
             color: #333;
             span {
                 color: #f00;
