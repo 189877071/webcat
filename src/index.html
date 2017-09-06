@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <title>在线聊天</title>
+    <link rel="stylesheet" href="/css/iconfont/iconfont.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="load" id="oLoad">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <h1 class="load-h1">正在加载…………</h1>
+    </div>
+    <audio src="/audio/shangxian.mp3" id="online"></audio>
+    <audio src="/audio/message.mp3" id="message"></audio>
+    <audio src="/audio/hujiao.wav" id="hujiao"></audio>
+</body>
+
+</html>
+<script>
+    (function () {
+        var oLoad = document.querySelector('#oLoad');
+        var aSpan = oLoad.querySelectorAll('span');
+        var r = 70;
+        var jd = 360 / aSpan.length;
+        var H = document.documentElement.clientHeight;
+        oLoad.style.marginTop = (H - oLoad.clientHeight) / 2 + 'px';
+
+        for (var i = 0; i < aSpan.length; i++) {
+            var fudu = Math.PI / 180 * (360 - jd * i);
+            var x = Math.cos(fudu) * r;
+            var y = Math.sin(fudu) * r;
+            aSpan[i].style.left = x + 'px';
+            aSpan[i].style.top = y + 'px';
+            aSpan[i].style.animationDelay = (i + 1) * 0.1 + 's';
+        }
+    })()
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/socket.io/2.0.2/socket.io.js"></script>
+<script src="/js/bundle.js"></script>

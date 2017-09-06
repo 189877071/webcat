@@ -1,0 +1,15 @@
+# 一个pc端
+    src
+
+# android App
+    
+怎样设计比较好呢？
+    前后端分离：
+        https://www.jsonhappy.com/ 前端
+        https://socket.xxx.com/ socket
+
+    
+
+
+
+

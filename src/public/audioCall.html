@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_s0c6vtp4lkofajor.css">
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    .audiobox {
+        width: 340px;
+        height: 250px;
+        margin: 0 auto;
+        overflow: hidden;
+        position: relative;
+    }
+
+    audio {
+        display: none;
+    }
+
+    .yuyin {
+        line-height: 250px;
+        text-align: center;
+        background: #ccc;
+    }
+
+    .yuyin i {
+        font-size: 150px;
+        color: #666;
+    }
+
+    .yuyin-hover-box {
+        position: absolute;
+        width: 100%;
+        height: 250px;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        transition: .3s;
+    }
+
+    .yuyin-hover {
+        height: 250px;
+        line-height: 250px;
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .yuyin-hover i {
+        font-size: 150px;
+        color: #333;
+    }
+
+    .mask {
+        position: absolute;
+        height: 250px;
+        width: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(255, 255, 255, .8);
+    }
+
+    .mask p {
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-family: '微软雅黑';
+        font-size: 16px;
+        color: #666;
+    }
+
+    .mask p:nth-of-type(1) {
+        margin-top: 100px;
+    }
+
+    .mask p:nth-of-type(2) {
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+    }
+</style>
+
+<body>
+    <div class="audiobox">
+        <audio src="" id="oAudio"></audio>
+        <div class="yuyin"><i class="iconfont icon-yuyin"></i></div>
+        <div class="yuyin-hover-box" id="yuyinHB">
+            <div class="yuyin-hover"><i class="iconfont icon-yuyin"></i></div>
+        </div>
+        <div class="mask" id="mask">
+            <p>正在等待对方答复</p>
+            <p id="gundon"></p>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.bootcss.com/socket.io/2.0.2/socket.io.js"></script>
+<script>
+    var oAudio = document.querySelector('#oAudio'),
+        yuyinH = document.querySelector('#yuyinHB'),
+        oMask = document.querySelector('#mask'),
+        time = null,
+        sdp = null,
+        ice = [],
+        peer = null,
+        init = null,
+        data = null,
+        num = 75,
+        loadTime = null,
+        socket = io('https://www.dainzheliya.com'),
+        mediaConstraints = { 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false } };
+
+    setInterval(() => {
+        num += 20;
+        if (num >= 220) num = 75;
+        yuyinHB.style.height = num + 'px';
+    }, 300);
+
+    (function () {
+        var oGundon = document.querySelector('#gundon'),
+            num = 0;
+        loadTime = setInterval(function () {
+            var str = '';
+            num++;
+            num > 9 && (num = 0);
+            for (var i = 0; i < num; i++) {
+                str += '.'
+            }
+            oGundon.innerHTML = str;
+        }, 200);
+    })();
+
+    function initCamera() {
+
+        function err(e) {
+            alert('麦克风打开失败');
+            console.log(e);
+        }
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({
+                video: false,
+                audio: true
+            }).then(Connection).catch(err);
+        }
+        else {
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+            window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+            window.RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection || window.msRTCPeerConnection;
+            window.RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription || window.mosRTCSessionDescription;
+            window.RTCIceCandidate = window.RTCIceCandidate || window.webkitRTCIceCandidate || window.mozRTCIceCandidate || window.msRTCIceCandidate;
+
+            if (!navigator.getUserMedia || !URL || !RTCPeerConnection || !RTCSessionDescription || !RTCIceCandidate) {
+                alert('您的浏览器无法使用视频通话功能');
+                return;
+            }
+
+            navigator.webkitGetUserMedia({ video: false, audio: true }, Connection, err);
+        }
+    };
+
+    function Connection(stream) {
+
+        peer = new RTCPeerConnection({
+            "iceServers": [
+                { "url": "stun:stun.l.google.com:19302" },
+                { "url": "stun:119.29.254.59:3478" },
+                {
+                    "url": "turn:119.29.254.59:3478",
+                    "username": "abcdef",
+                    "credential": "abcdef"
+                }
+            ]
+        });
+
+        peer.addEventListener('icecandidate', function (ev) {
+            ev.candidate && ice.push(ev.candidate);
+        }, false);
+
+        peer.addEventListener('addstream', function (ev) {
+            oAudio.srcObject = ev.stream;
+            oAudio.onloadedmetadata = function (e) {
+                oAudio.play();
+            };
+        }, false);
+
+        peer.addEventListener('removestream', function (ev) {
+            alert('连接已经断开');
+            oHe.srcObject = null;
+        }, false);
+
+        peer.addStream(stream);
+
+        if (!init) {
+            console.log('123');
+            oMask.style.display = 'none';
+            peer.createOffer(oSetSDP, setSDPErr, mediaConstraints);
+        }
+        else {
+            setData(init);
+            peer.createAnswer(oSetSDP, setSDPErr, mediaConstraints);
+        }
+
+        function oSetSDP(sdp) {
+
+            peer.setLocalDescription(sdp);
+
+            clearInterval(time);
+
+            time = setInterval(function () {
+                if (ice.length > 0) {
+                    clearInterval(time);
+                    parent.audioCallData.getConfig({ sdp: sdp, ice: ice, socket: data });
+                }
+            }, 2000);
+        }
+
+        function setSDPErr(e) {
+            alert('初始化失败');
+        }
+    }
+
+    function setData(data) {
+
+        if (!peer) return;
+        peer.setRemoteDescription(new RTCSessionDescription(data.sdp));
+
+        setTimeout(() => {
+            for (var i = 0; i < data.ice.length; i++) {
+                peer.addIceCandidate(new RTCIceCandidate(data.ice[i]));
+            }
+        }, 1000);
+    }
+
+
+    function setInit(data) {
+        console.log(data);
+        init = data;
+    }
+
+    // 初始化
+    socket.on('initLoginData', function (m) {
+        data = m;
+        setTimeout(function() {
+            initCamera();
+        }, 1000);
+    });
+
+    socket.on('callback', function (data) {
+        console.log(JSON.parse(data.content));
+        oMask.style.display = 'none';
+        setData(JSON.parse(data.content));
+    });
+
+</script>

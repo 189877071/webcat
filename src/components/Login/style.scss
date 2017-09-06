@@ -1,0 +1,255 @@
+@keyframes banner {
+    0% {
+        transform: scale(.1,.1);
+    }
+    75% {
+        transform: scale(1.5, 1.5);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes topspanrotate {
+    from {
+        transform: rotateY(180deg) rotateX(10deg);
+    }
+    to {
+        transform: rotateY(0);
+    }
+}
+
+.banner {
+    
+    // animation: banner .5s linear;
+    color: #fff;
+    font-size: 20px;
+    margin: 0 auto; 
+    text-align: center;
+    height: 56px;
+    line-height: 56px;
+    background: url(/image/banner.png) no-repeat;
+    width: 400px;
+    padding-bottom: 19px;
+    position: relative;
+    perspective: 50px;
+
+
+    span {
+        position: absolute;
+        transform-style: preserve-3d;
+        width: 20px;
+        height: 20px;
+        left: 20px;
+        transform-origin: left center;
+        transform: rotateY(-90deg);
+        transition: .3s;
+    }
+}
+
+.banner>span {
+    left: 100px;
+}
+
+.login-box {
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 50px;
+    background: #fff;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.head-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: url(/image/head-photo.png) no-repeat #ff9933;
+    position: absolute;
+    left: 110px;
+    top: -40px;
+}
+
+.login-nav {
+    width: 100px;
+    margin: 0 auto;
+    height: 30px;
+    line-height: 30px;
+    padding-top: 50px;
+    li {
+        width: 50%;
+        float: left;
+        text-align: center;
+        &.active {
+            border-bottom: 2px solid #336;
+            a {
+                color: #333;
+            }
+        }
+        a {
+            color: #777;
+        }
+    }
+}
+
+.moblie {
+    padding-top: 15px;
+    width: 250px;
+    margin: 0 auto;
+    li {
+        width: 33.3%;
+        float: left;
+        cursor: pointer;
+    }
+    .title {
+        height: 20px;
+        line-height: 20px;
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+    }
+    i.moblie-icon {
+        width: 50px;
+        height: 50px;
+        line-height: 45px;
+        font-size: 50px;
+        color: #333;
+        display: block;
+        margin: 0 auto;
+    }
+    .main-title {
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        text-align: center;
+        color: #333;
+        position: relative;
+        span {
+            position: absolute;
+            width: 70px;
+            height: 2px;
+            background: #333;
+            top: 19px;
+            &.x-l {
+                left: 3px;
+            }
+            &.x-r {
+                right: 3px;
+            }
+        }
+    }
+}
+
+.input-box {
+    padding-top: 15px;
+    width: 250px;
+    margin: 0 auto;
+    input:not(.checkbox), button {
+        width: 248px;
+        position: relative;
+        z-index: 1;
+        background: none;
+        transition: .5s;
+    }
+    button {
+        width: 250px;
+    }
+    input.checkbox {
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        position: absolute;
+        left: 5px;
+        top: 2px;
+    }
+
+    input.verify-input {
+        width: 160px;
+        float: left;
+    }
+
+    img.verify-img {
+        float: right;
+        width: 80px;
+        cursor: pointer;
+    }
+
+    label {
+        font-size: 12px;
+        color: #666;
+        position: absolute;
+        left: 20px;
+        cursor: pointer;
+    }
+    
+    .wangjimima {
+        color: #666;
+        font-size: 12px;
+        position: absolute;
+        right: 5px;
+    }
+    button {
+        cursor: pointer;
+        background: #333;
+        color: #fff;
+        height: 32px;
+    }
+    p {
+        padding-bottom: 10px;
+        position: relative;
+        &.success {
+            span {
+                color: #399939;
+            }
+            input {
+                border-color: #989f98;
+                box-shadow: 0 0 10px rgba(123,146,123,.3);   
+            }
+        }
+        &.error {
+            span {
+                color: #a94442;
+            }
+            input {
+                text-align: right;
+                box-shadow: 0 0 10px rgba(153,51,51,.3);   
+                border-color: #a94442;
+                width: 238px;
+                padding-right: 10px;
+            }
+            input.email-verify {
+                width: 185px;
+                padding-right: 63px;
+            }
+            input.verify-input {
+                width: 150px;
+            }
+        }
+        span.ev-right {
+            left: auto;
+            right: 10px;
+            color: #fff;
+            z-index: 2;
+            cursor: pointer;
+            background: #333;
+            height: 22px;
+            line-height: 22px;
+            top: 5px;
+            padding: 0 5px;
+            border-radius: 3px;
+        }
+    }
+
+    span {
+        position: absolute;
+        font-size: 12px;
+        line-height: 32px;
+        left: 10px;
+        top: 0;
+    }
+
+    .hidden {
+        overflow: hidden;
+        transition: .3s;
+    }
+    
+}

@@ -1,0 +1,175 @@
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td { 
+    margin:0; 
+    padding:0; 
+    font-family: 'Microsoft YaHei';
+}
+
+h1,h2,h3,h4,h5,h6{ 
+    font-size:100%;
+}
+
+address,cite,dfn,var,em,i,u{ 
+    font-style:normal;
+}
+
+ol,ul{ 
+    list-style:none;
+}
+
+a{ 
+    text-decoration:none;
+}
+
+img{ 
+    border:none; 
+    vertical-align:middle;
+}
+
+button,input,select,textarea{ 
+    font-size:100%;
+}
+
+table{ 
+    border-collapse:collapse; 
+    border-spacing:0;
+}
+
+:focus{ 
+    outline:0;
+}
+
+.left { 
+    float: left;
+}
+
+.right { 
+    float: right;
+}
+
+.clearfix{ 
+    *zoom:1;
+}
+
+.clearfix:after{ 
+    content:""; 
+    display:block; 
+    height:0; 
+    clear:both;
+    visibility:hidden;
+}
+
+body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.box-shadow {
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity .3s ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity .3s ease-in;
+}
+
+.example-appear {
+  opacity: 0.01;
+}
+
+.example-appear.example-appear-active {
+  opacity: 1;
+  transition: opacity .3s ease-in;
+}
+
+.shadow-input-style {
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 3px;
+  color: #333;
+  font-size: 12px;
+}
+
+.transitionGroup-enter {
+  opacity: 0.01;
+}
+
+.transitionGroup-enter.transitionGroup-enter-active, .transitionGroup-leave.transitionGroup-leave-active {
+  transition: .3s ease-in;
+  opacity: 1;
+}
+
+.transitionGroup-leave {
+  opacity: 1;
+}
+
+.transitionGroup-leave.transitionGroup-leave-active {
+  opacity: 0.01;
+}
+
+.mask-common-connect-box {
+  width: 400px;
+  margin: 0 auto;
+  background: #fff;
+  padding-bottom: 20px;
+  position: relative;
+  
+  h1 {
+      height: 50px;
+      width: 370px;
+      margin: 0 auto;
+      line-height: 50px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+      position: relative;
+
+      a {
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          top: 10px;
+          right:-5px;
+          color: #666;
+          line-height: 14px;
+          border-radius: 50%;
+          text-align: center;
+          transition: .5s;
+          text-indent: .5px;
+          &:hover {
+              background: #333;
+              color: #fff;
+          }
+      }
+  }
+}
+
+.gray {
+    -webkit-filter: grayscale(70%);
+    -moz-filter: grayscale(70%);
+    -ms-filter: grayscale(70%);
+    -o-filter: grayscale(70%);
+    filter: grayscale(70%);
+    filter: gray;
+}
+
+
+
