@@ -55,7 +55,7 @@ export const register = {
     imgbox: 0,
     emailvbox: 0,
     submit: '获取邮箱验证码',
-    time: 20,
+    time: 120,
     stop: 1,
     jump: 3
 }

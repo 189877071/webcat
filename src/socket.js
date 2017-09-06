@@ -135,20 +135,22 @@ export default function (store) {
 
     // 在其他地方登录当前登录被踢出 propose
     socket.on('propose', function (data) {
+
         if (window.localStorage && data.browserkey == localStorage.getItem('browserkey')) {
             location.href = '/alreadylogin.html';
             return;
         }
-        fetch(url.exitURL, setFetchPost({ operation: 1 })).then(fetchResCallback).then((data) => {
-            if (data && data.success) {
-                window.localStorage && localStorage.removeItem('autoLogin');
 
-                dispatch({ type: LOGINONOFFACTION, onoff: false });
+        fetch(url.exitURL, setFetchPost({ operation: 1, ...socketInit })).then(fetchResCallback).then((data) => {
+            if (!data || !data.success) return;
 
-                dispatch({ type: loginIndexAction.INIT, state: $.extend(true, {}, login) });
+            localStorage.removeItem('autoLogin');
 
-                history.push('/login');
-            }
+            dispatch({ type: LOGINONOFFACTION, onoff: false });
+
+            dispatch({ type: loginIndexAction.INIT, state: $.extend(true, {}, login) });
+
+            history.push('/login');
         });
     });
 

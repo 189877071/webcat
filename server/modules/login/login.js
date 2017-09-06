@@ -97,6 +97,7 @@ module.exports = function (req, res, next) {
                 return;
             }
             req.dbInsert(autologinTable, { userid: data.id, okey: delayed, otime: Date.now(), browser: md5(req.headers[`user-agent`]) }).then(() => {
+                console.log(data);
                 reslove(data);
             }).catch(() => {
                 req.logErr('添加自动登录信息失败');
@@ -154,9 +155,7 @@ module.exports = function (req, res, next) {
             }
             else {
                 req.dbInsert(loginTable, { host: udphost, socketid, port: Number(udpport), userid, otime: Date.now(), device }).then(() => {
-                    // reslove();
-                    // 从这个地方发送
-                    sendonline(0, reslove);
+                    getLoginUser().then(sendOnLine).then(reslove);
                 }).catch(() => {
                     req.logErr('添加cat_socketloginuser表数据出错');
                     res.json({ success: false, text: 3 });
@@ -173,17 +172,28 @@ module.exports = function (req, res, next) {
         });
     }
 
-    function sendonline(num, reslove) {
-        if (num >= socket.length) {
-            reslove();
-            return;
-        }
-        req.udpSend({ operation: 'useronline', id: userid }, socket[num].udpport, socket[num].udphost)
-            .then(() => sendonline(++num, reslove))
-            .catch(() => {
-                req.logErr(`发送登录通知失败：udp端口${socket[num].udpport}、udp主机${socket[num].udphost}`);
-                sendonline(++num, reslove);
+
+    // 获取到所有登录用户
+    function getLoginUser() {
+        return new Promise(reslove => {
+            req.dbSelect(loginTable, { 
+                cols: 'socketid,host,port',
+                where: `userid!=${userid}` 
             })
+            .then(data => reslove(data))
+            .catch(() => { 
+                req.logErr(`获取登录的用户失败`);
+                res.json({ success: false });
+            })
+        })
+    }
+
+    // 发送通知 有人上线了
+    function sendOnLine(data) {
+        return new Promise(reslove => {
+            data.forEach(item => req.udpSend({operation: 'useronline', id: item.socketid, userid}, item.port, item.host));
+            reslove();
+        });
     }
 
     start();

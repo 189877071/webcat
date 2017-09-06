@@ -34,11 +34,11 @@ process.on('message', (m) => {
         },
         useronline(data) {
             // 通知所有用户，有新的人上线了
-            io.emit('userOnLine', { id: data.id });
+            io.sockets.sockets[data.id] && io.sockets.sockets[data.id].emit('userOnLine', { id: data.userid });
         },
         useroffline(data) {
             // 下线通知
-            io.emit('userOffLine', { id: data.id });
+            io.sockets.sockets[data.id] && io.sockets.sockets[data.id].emit('userOffLine', { id: data.userid });
         },
         common(data) {
             io.sockets.sockets[data.id] && io.sockets.sockets[data.id].emit('shortMessage', { content: data.content, sendid: data.sendid });

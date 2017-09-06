@@ -95,7 +95,9 @@ module.exports = function (req, res, next) {
             else {
                 req.dbInsert(loginTable, {
                     socketid, userid: userId, host: udphost, port: Number(udpport), device, otime: Date.now()
-                }).then(() => sendonline(0, reslove)).catch(() => {
+                }).then(() => {
+                    getLoginUser().then(sendOnLine).then(reslove);
+                }).catch(() => {
                     req.logErr(`${loginTable}表插入数据失败`);
                     res.json({ login: false });
                 })
@@ -106,6 +108,7 @@ module.exports = function (req, res, next) {
     // 查询用户数据
     function selectUser() {
         return new Promise(reslove => {
+            
             req.dbSelect(userTable, {
                 where: `id=${userId}`,
                 cols: 'id,username,headphoto,email,synopsis,ext,age,logindate,name'
@@ -114,6 +117,7 @@ module.exports = function (req, res, next) {
                     res.json({ login: false });
                     return;
                 }
+                
                 reslove(data[0]);
             }).catch(() => {
                 req.logErr(`查询${userTable}表出现错误`);
@@ -134,7 +138,9 @@ module.exports = function (req, res, next) {
     // 查询用户自动登录表
     function selectAutoLogin() {
         return new Promise(reslove => {
-            req.dbSelect(autologinTable, `okey='${key}' and browser='${md5(req.headers[`user-agent`])}'`).then(data => {
+            req.dbSelect(autologinTable, {
+                where: `okey='${key}' and browser='${md5(req.headers[`user-agent`])}'`
+            }).then(data => {
                 if (!data[0]) {
                     res.json({ login: false });
                     return;
@@ -158,17 +164,26 @@ module.exports = function (req, res, next) {
         })
     }
 
-    // 上线通知
-    function sendonline(num, reslove) {
-        if (num >= socket.length) {
-            reslove();
-            return;
-        }
-        req.udpSend({ operation: 'useronline', id: userId }, socket[num].udpport, socket[num].udphost)
-            .then(() => sendonline(++num, reslove))
-            .catch(() => {
-                req.logErr(`发送登录通知失败：udp端口${socket[num].udpport}、udp主机${socket[num].udphost}`);
-                sendonline(++num, reslove);
+    // 获取到所有登录用户
+    function getLoginUser() {
+        return new Promise(reslove => {
+            req.dbSelect(loginTable, { 
+                cols: 'socketid,host,port',
+                where: `userid!=${userId}` 
             })
+            .then(data => reslove(data))
+            .catch(() => { 
+                req.logErr(`获取登录的用户失败`);
+                res.json({ success: false });
+            })
+        })
+    }
+
+    // 发送通知 有人上线了
+    function sendOnLine(data) {
+        return new Promise(reslove => {
+            data.forEach(item => req.udpSend({operation: 'useronline', id: item.socketid, userid: userId}, item.port, item.host));
+            reslove();
+        });
     }
 }

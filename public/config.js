@@ -33,10 +33,11 @@ module.exports = {
         loginTable: 'cat_socketloginuser',
         recordTable: 'cat_record'
     },
-    logPath: `${upwardDir(__dirname)}/logs/`,
+    logPath: `${upwardDir(__dirname)}/log/`,
     logSize: 1048576,
     imgverifyurl: 'http://my.php.com/image.php',
     uploadFilePC: `${upwardDir(__dirname)}/src/public/image/upload`
 }
+
 
 

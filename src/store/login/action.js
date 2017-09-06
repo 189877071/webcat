@@ -136,10 +136,10 @@ export const loginRegisterAction = {
                 if (state.pass.value === '') {
                     verifyfn(state.pass);
                 }
-                else if (state.pass.value > 20) {
+                else if (state.pass.value.length > 20) {
                     verifyfn(state.pass, '长度不能超出20位');
                 }
-                else if (state.pass.value < 6) {
+                else if (state.pass.value.length < 6) {
                     verifyfn(state.pass, '长度不能少于6位');
                 }
 
