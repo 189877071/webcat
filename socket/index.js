@@ -12,7 +12,7 @@ process.on('message', (m) => {
     const io = socket(m.port);
 
     io.on('connection', (socket) => {
-
+       
         // 把挂载到socket上的信息 发送给用户
         socket.emit('initLoginData', { udphost: m.udphost, udpport: m.udpport, socketid: socket.id });
 
@@ -20,7 +20,7 @@ process.on('message', (m) => {
             setTimeout(() => {
                 if (!udprinfo) return;
                 const buf = new Buffer(JSON.stringify({ operation: 'userexit', socketid: socket.id }));
-                udpserver.send(buf, 0, buf.length, udprinfo.port, udprinfo.address);
+                udpserver.send(buf, 0, buf.length, udprinfo.port, udprinfo.address); 
             }, 5000);
         })
     });

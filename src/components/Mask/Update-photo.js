@@ -57,7 +57,8 @@ class UpdatePhoto extends Component {
                 <div className="caozuo">
                     <a href="javascript:;" title="选择图片">
                         <i className="iconfont icon-dakai"></i>
-                        <input type="file" ref="file" accept="image/*" />
+                        <input type="file" ref="file" /> 
+                        {/* accept="image/*" */}
                     </a>
                     <a href="javascript:;" title="放大" ref="fangda"><i className="iconfont icon-fangda"></i></a>
                     <a href="javascript:;" title="缩小" ref="suoxiao"><i className="iconfont icon-suoxiao"></i></a>

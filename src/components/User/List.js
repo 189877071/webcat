@@ -6,6 +6,8 @@ import { appUserWindow } from '../../store/app/action'
 
 import ScrollMove from '../../scrollMove'
 
+var imgLoad = true;
+
 class List extends Component {
     render() {
         const { dispatch, users } = this.props;
@@ -36,7 +38,8 @@ class List extends Component {
             alist.push(
                 <li key={index} className="clearfix" onClick={() => showCat(index)}>
                     <div className="left">
-                        {index < 15 ? <img className={imgClass} src={headphoto} alt="头像" />:<img className={imgClass} src="/image/loader.gif" data-src={headphoto} alt="头像" />}
+                        {/* {index < 15 ? <img className={imgClass} src={headphoto} alt="头像" />:<img className={imgClass} src="/image/loader.gif" data-src={headphoto} alt="头像" />} */}
+                        <img className={imgClass} src="/image/loader.jpg" data-src={headphoto} alt="头像" />
                     </div>
                     <div className="right">
                         <div className="title">{name} {stateText()}</div>
@@ -81,6 +84,31 @@ class List extends Component {
 
         oScrollMove.init();
     }
+
+    componentDidUpdate() {
+        let {list} = this.refs
+        if(imgLoad) {
+            let aLi = $(list).find('li');
+            if(aLi.length >= 0) {
+                let len = aLi.length > 15 ? 15 : aLi.length;
+                for (let i = 0; i < len; i++) {
+                    let obj = aLi.eq(i).find('img');
+                    let src = obj.attr('data-src');
+                    loaderImg(src, obj);
+                    $(obj).removeAttr('data-src');
+                }
+                imgLoad = false;
+            }
+        }
+    }
+}
+
+function imgLodadFn(obj) {
+    if(!obj) return;
+    var src = $(obj).attr('data-src');
+    if(!src) return;
+    loaderImg(src, obj);
+    $(obj).removeAttr('data-src');
 }
 
 export default connect((state, props) => {

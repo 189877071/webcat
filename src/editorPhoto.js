@@ -226,12 +226,20 @@ class editopPhoto {
         const dpImgData = this.ctx.getImageData(0, 0, cw, ch);
 
         let newData = this.ctx.createImageData(cw, ch);
-
+       
         for (let i = 0; i < imgData.data.length; i += 4) {
-            newData.data[i] = (imgData.data[i] + dpImgData.data[i]) / 2;
-            newData.data[i + 1] = (imgData.data[i + 1] + dpImgData.data[i + 1]) / 2;
-            newData.data[i + 2] = (imgData.data[i + 2] + dpImgData.data[i + 2]) / 2;
-            newData.data[i + 3] = imgData.data[i + 3];
+            if(dpImgData.data[i] >= 200 && dpImgData.data[i + 1] >= 200 && dpImgData.data[i + 2] >= 200) {
+                newData.data[i] = imgData.data[i];
+                newData.data[i + 1] = imgData.data[i + 1];
+                newData.data[i + 2] = imgData.data[i + 2];
+                newData.data[i + 3] = imgData.data[i + 3];
+            }
+            else {
+                newData.data[i] = 100;
+                newData.data[i + 1] = 100;
+                newData.data[i + 2] = 100;
+                newData.data[i + 3] = 255;
+            }
         }
 
         this.ctx.clearRect(0, 0, cw, ch);
