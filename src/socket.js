@@ -170,19 +170,24 @@ export default function (store) {
         if (!active.id || active.id == data.id || !users.length) return;
 
         for (let i = 0; i < users.length; i++) {
-            let item = users[i];
 
-            if (item.id == data.id) {
+            if (users[i].id == data.id) {
+
+                let item = users.splice(i, 1)[0];
+
                 item.login = 1;
-                let oItem = users.splice(i, 1);
-                users.unshift(oItem[0]);
+
+                users.unshift(item);
+
                 dispatch({ type: appUserWindow.ALLUSERDATA, users });
+
                 notice('上线通知', `好友“${item.name ? item.name : item.username}” 上线啦`, oItem[0].headphoto);
+
                 if (audio) $('#online').get(0).play();
+
                 break;
             }
         }
-
 
         for (let i = 0; i < boxlist.length; i++) {
             if (boxlist[i].id == data.id) {
@@ -218,18 +223,20 @@ export default function (store) {
         if (!active.id || active.id == data.id || !users.length) return;
 
         for (let i = 0; i < users.length; i++) {
-            let item = users[i];
-            if (item.id == data.id) {
+            
+            if (users[i].id == data.id) {
+
+                let item = users.splice(i, 1)[0];
 
                 item.login = 0;
-                users.splice(i, 1);
-
+                
                 for (let j = 0; j < users.length; j++) {
                     if (users[j].login == 0) {
                         users.splice(j, 0, item);
                         break;
                     }
                 }
+
                 dispatch({ type: appUserWindow.ALLUSERDATA, users });
 
                 if (audio) $('#online').get(0).play();

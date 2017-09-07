@@ -4,50 +4,108 @@ import { connect } from 'react-redux'
 
 import { appUserWindow } from '../../store/app/action'
 
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+
 import ScrollMove from '../../scrollMove'
 
 var imgLoad = true;
+
+class RImage extends Component {
+    render() {
+        const { src, oclass } = this.props;
+        return (
+            <CSSTransitionGroup
+                transitionName="transitionGroup"
+                transitionLeave={false}
+                transitionEnterTimeout={300}
+            >
+                <img className={oclass} src={src} key={src} />
+            </CSSTransitionGroup>
+        )
+    }
+}
+
+class Li extends Component {
+
+    render() {
+        let { showCat, index, user: { headphoto, name, username, synopsis, login, leaveInfor } } = this.props;
+
+        name = name ? name : username;
+
+        synopsis = synopsis ? synopsis : '该用户很羞涩，不善于介绍自己';
+
+        leaveInfor = !leaveInfor ? false : (leaveInfor > 99 ? '99+' : leaveInfor);
+
+        return (
+            <li className="clearfix" onClick={() => showCat(index)} ref="box">
+                <div className="left">
+                    <RImage oclass={login === 0 ? 'gray' : 'lineimg'} src={this.state.src} />
+                </div>
+
+                <div className="right">
+                    <div className="title">{name} {this.stateText()}</div>
+                    <div className="jianjie">{synopsis} {leaveInfor && <span className="leave-infor">{leaveInfor}</span>}</div>
+                </div>
+            </li>
+        )
+    }
+
+    stateText() {
+        if (this.props.user.login == 1) {
+            return <span className="online"><i className="iconfont icon-zaixian"></i> 在线</span>
+        }
+        else {
+            return <span className="leave"><i className="iconfont icon-lixian"></i> 离线</span>
+        }
+    }
+
+    componentDidMount() {
+        const { box } = this.refs;
+
+        this.setState({ firstSrc: this.props.user.headphoto });
+
+        if (this.props.index < 10) {
+            this.imgLoad();
+        }
+        else {
+            setTimeout(() => {
+                this.imgLoad();
+            }, this.props.index * 10 + 100);
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.state.firstSrc != this.props.user.headphoto) {
+            this.setState({ src: this.props.user.headphoto, firstSrc: this.props.user.headphoto });
+        }
+    }
+
+    imgLoad() {
+        let oimg = new Image();
+        oimg.onload = () => {
+            oimg = null;
+            this.setState({ src: this.props.user.headphoto });
+        }
+        oimg.src = this.props.user.headphoto;
+    }
+
+    constructor() {
+        super();
+        this.stateText = this.stateText.bind(this);
+        this.imgLoad = this.imgLoad.bind(this);
+        this.state = { src: '/image/loader.jpg' }
+    }
+}
 
 class List extends Component {
     render() {
         const { dispatch, users } = this.props;
 
-        const [alist, showCat] = [
-            [],
-            index => dispatch(appUserWindow.showCat(index))
-        ];
+        let alist = [];
 
-        users.forEach(function (item, index) {
-            let { headphoto, name, username, synopsis, login, leaveInfor } = item;
-            name = name ? name : username;
-            synopsis = synopsis ? synopsis : '该用户很羞涩，不善于介绍自己'
-
-            const imgClass = login == 0 ? 'gray' : 'lineimg';
-
-            leaveInfor = !leaveInfor ? false : (leaveInfor > 99 ? '99+' : leaveInfor);
-
-            const stateText = () => {
-                if (login == 1) {
-                    return <span className="online"><i className="iconfont icon-zaixian"></i> 在线</span>
-                }
-                else {
-                    return <span className="leave"><i className="iconfont icon-lixian"></i> 离线</span>
-                }
-            }
-
-            alist.push(
-                <li key={index} className="clearfix" onClick={() => showCat(index)}>
-                    <div className="left">
-                        {/* {index < 15 ? <img className={imgClass} src={headphoto} alt="头像" />:<img className={imgClass} src="/image/loader.gif" data-src={headphoto} alt="头像" />} */}
-                        <img className={imgClass} src="/image/loader.jpg" data-src={headphoto} alt="头像" />
-                    </div>
-                    <div className="right">
-                        <div className="title">{name} {stateText()}</div>
-                        <div className="jianjie">{synopsis} {leaveInfor && <span className="leave-infor">{leaveInfor}</span>}</div>
-                    </div>
-                </li>
-            )
-        });
+        users.forEach((item, index) => {
+            alist.push(<Li user={item} key={index} index={index} showCat={index => dispatch(appUserWindow.showCat(index))}></Li>)
+        })
 
         return (
             <div>
@@ -68,47 +126,18 @@ class List extends Component {
 
         const { box, list, scrollBox, scroll, moveY } = this.refs;
 
-        const oScrollMove = new ScrollMove(box, list, scrollBox, scroll, moveY, {
-            loadImg: (t) => {
-                let aLi = $(list).find('li');
-                for (let i = 0; i < aLi.length; i++) {
-                    let obj = aLi.eq(i).find('img');
-                    let src = obj.attr('data-src');
-                    if (aLi.eq(i).position().top < t && src) {
-                        loaderImg(src, obj);
-                        $(obj).removeAttr('data-src');
-                    }
-                }
-            }
-        });
+        const oScrollMove = new ScrollMove(box, list, scrollBox, scroll, moveY);
 
         oScrollMove.init();
     }
 
     componentDidUpdate() {
-        let {list} = this.refs
-        if(imgLoad) {
-            let aLi = $(list).find('li');
-            if(aLi.length >= 0) {
-                let len = aLi.length > 15 ? 15 : aLi.length;
-                for (let i = 0; i < len; i++) {
-                    let obj = aLi.eq(i).find('img');
-                    let src = obj.attr('data-src');
-                    loaderImg(src, obj);
-                    $(obj).removeAttr('data-src');
-                }
-                imgLoad = false;
-            }
-        }
+        const { box, list } = this.refs;
     }
-}
 
-function imgLodadFn(obj) {
-    if(!obj) return;
-    var src = $(obj).attr('data-src');
-    if(!src) return;
-    loaderImg(src, obj);
-    $(obj).removeAttr('data-src');
+    constructor() {
+        super();
+    }
 }
 
 export default connect((state, props) => {

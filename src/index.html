@@ -8,9 +8,56 @@
     <meta name="renderer" content="webkit">
     <title>在线聊天</title>
     <link rel="stylesheet" href="/css/iconfont/iconfont.css">
-    <link rel="stylesheet" href="/css/style.css">
 </head>
+<style>
+    @keyframes load {
+        0% {
+            background: rgba(51, 51, 51, 0);
+            transform: scale(0, 0);
+        }
+        50% {
+            background: rgba(51, 51, 51, 1);
+            transform: scale(1, 1);
+        }
+        55% {
+            background: rgba(51, 51, 51, 1);
+            transform: scale(1, 1);
+        }
+        100% {
+            background: rgba(51, 51, 51, 0);
+            transform: scale(0, 0);
+        }
+    }
 
+    .load {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+        background-size: 100px 100px;
+        position: relative;
+    }
+
+    .load-h1 {
+        text-align: center;
+        position: relative;
+        top: 70px;
+        color: #111;
+        font-size: 20px;
+        font-family: 'Microsoft YaHei';
+        font-weight: 500;
+    }
+
+    .load span {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(51, 51, 51, 0);
+        transform: scale(0, 0);
+        animation: load 1.5s linear;
+        animation-iteration-count: infinite;
+    }
+</style>
 <body>
     <div id="app">
         <div class="load" id="oLoad">

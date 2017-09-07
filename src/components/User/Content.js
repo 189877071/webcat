@@ -117,7 +117,7 @@ class CatContent extends Component {
             $(list).css('top', listT);
             $(scroll).css('top', scrollT);
             $(editorContent).focus();
-        }, 30);
+        }, 60);
     }
     imgaeChange(ev) {
         if (!ev.target.files[0]) return;

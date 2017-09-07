@@ -56,13 +56,17 @@ export const appUserWindow = {
                 }
 
                 for (let i = 0; i < data.users.length; i++) {
+
                     data.users[i].login = 0;
+
                     for (let j = 0; j < data.login.length; j++) {
                         if (data.users[i].id == data.login[j].userid) {
                             data.users[i].login = 1;
-                            leaveInforList[data.users[i].id] && (data.users[i].leaveInfor = leaveInforList[data.users[i].id]);
+                            data.users.unshift(data.users.splice(i, 1)[0]);
                         }
                     }
+
+                    leaveInforList[data.users[i].id] && (data.users[i].leaveInfor = leaveInforList[data.users[i].id]);
                 }
 
                 dispatch({ type: appUserWindow.ALLUSERDATA, users: data.users });
@@ -148,8 +152,10 @@ export const appUserWindow = {
                 }
             })
         }
-    }
+    },
 }
+
+
 
 export const appCatWindow = {
     RELIST: 'APPCATWINDOWREUSERS',

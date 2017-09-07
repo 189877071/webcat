@@ -39,7 +39,7 @@ module.exports = function (req, res, next) {
             })
         })
     }
-
+    // 获取离线信息
     function leaveInfor(oData) {
         req.dbSelect(recordTable, {
             where: `receiveid=${login.id} and state=0`,
